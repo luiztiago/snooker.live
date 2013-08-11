@@ -2,7 +2,8 @@
   "name": "snooker-live",
   "version": "0.0.0",
   "dependencies": {
-    "socket.io": "0.9.16"
+    "socket.io": "0.9.16",
+    "cli-log": "0.0.7"
     },
   "devDependencies": {
     "grunt": "~0.4.1",
