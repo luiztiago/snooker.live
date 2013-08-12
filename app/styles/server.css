@@ -1,0 +1,124 @@
+/* line 5, sass/sass/server.scss */
+html,
+body,
+.container {
+  height: 100%;
+}
+
+/* line 16, sass/sass/server.scss */
+#ranking,
+#snooker {
+  position: relative;
+  height: 100%;
+  float: left;
+  padding: 0;
+  margin: 0;
+}
+/* line 24, sass/sass/server.scss */
+#ranking .content h2,
+#snooker .content h2 {
+  margin: 0;
+  background: #333;
+  padding: 10px 0;
+  text-align: center;
+  color: white;
+}
+/* line 32, sass/sass/server.scss */
+#ranking .content ol,
+#snooker .content ol {
+  padding: 0;
+  margin: 0;
+  counter-reset: item;
+  list-style-position: inside;
+  list-style-type: decimal;
+}
+/* line 39, sass/sass/server.scss */
+#ranking .content ol li,
+#snooker .content ol li {
+  padding: 10px 0 10px 45px;
+  background: #e2e2e2;
+  position: relative;
+  display: block;
+}
+/* line 45, sass/sass/server.scss */
+#ranking .content ol li:before,
+#snooker .content ol li:before {
+  background: #333;
+  color: white;
+  content: counter(item);
+  counter-increment: item;
+  height: 20px;
+  left: 5px;
+  padding: 5px 5px 2px 5px;
+  position: absolute;
+  text-align: center;
+  top: 5px;
+  width: 20px;
+}
+/* line 59, sass/sass/server.scss */
+#ranking .content ol li:nth-child(2n+2),
+#snooker .content ol li:nth-child(2n+2) {
+  background: #eee;
+}
+
+/* line 67, sass/sass/server.scss */
+#ranking {
+  width: 14%;
+  background: #f4f4f4;
+}
+
+/* line 72, sass/sass/server.scss */
+.breath {
+  width: 1%;
+  height: 100%;
+  float: left;
+  background: #333;
+}
+
+/* line 79, sass/sass/server.scss */
+#snooker {
+  width: 85%;
+}
+/* line 85, sass/sass/server.scss */
+#snooker .one,
+#snooker .two,
+#snooker .three,
+#snooker .four {
+  position: absolute;
+  width: 20%;
+  height: 20%;
+}
+/* line 91, sass/sass/server.scss */
+#snooker .one {
+  top: 0;
+  left: 0;
+  background-color: #41b1a6;
+}
+/* line 97, sass/sass/server.scss */
+#snooker .two {
+  top: 0;
+  right: 0;
+  background-color: #6cd058;
+}
+/* line 103, sass/sass/server.scss */
+#snooker .three {
+  bottom: 0;
+  left: 0;
+  background-color: #f24e5a;
+}
+/* line 109, sass/sass/server.scss */
+#snooker .four {
+  bottom: 0;
+  right: 0;
+  background-color: #ff7c06;
+}
+/* line 115, sass/sass/server.scss */
+#snooker #dumb-area {
+  position: absolute;
+  width: 20%;
+  height: 20%;
+  left: 40%;
+  top: 40%;
+  color: #c5c5c5;
+  font-size: 4em;
+}
