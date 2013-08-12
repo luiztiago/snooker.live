@@ -19,7 +19,30 @@
 </head>
 <body>
   <div class="container">
-    ;)
+    <aside id="ranking">
+      <h2>Ranking</h2>
+
+      <ol>
+        <li>Luiz Tiago</li>
+        <li>Djalma Araújo</li>
+        <li>Henrique Pintinho</li>
+        <li>He-man</li>
+        <li>Lula Molusco</li>
+        <li>Pedro Gabriel</li>
+        <li>Lucas</li>
+        <li>Fernando Size</li>
+        <li>Deyvidson</li>
+        <li>Wilker Silva</li>
+        <li>Guilherme Lalala</li>
+      </ol>
+    </aside>
+
+    <section id="snooker">
+      <span class="hole one"></span>
+      <span class="hole two"></span>
+      <span class="hole three"></span>
+      <span class="hole four"></span>
+    </section>
   </div>
 
   <!--[if lt IE 7]>
@@ -30,12 +53,8 @@
   <script src="bower_components/jquery/jquery.js"></script>
   <!-- endbuild -->
 
-  <script src="//localhost:4000/socket.io/socket.io.js"></script>
-  <script>
-    var socket = io.connect('//localhost:4000');
-    socket.on('whoami', function (data) {
-      socket.emit('whoami', {type: 'server'});
-    });
-  </script>
+  <script src="//pejs:4000/socket.io/socket.io.js"></script>
+  <script>var socket = io.connect('//pejs:4000');</script>
+  <script src="scripts/server/server_client.js"></script>
 </body>
 </html>
