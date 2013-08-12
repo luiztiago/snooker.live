@@ -46,6 +46,12 @@ SnookerLiveServer.prototype.handlers = function (socket) {
   socket.on('movePlayer', function (data) {
     io.sockets.in('server').emit('movePlayer', {playerId: data.playerId, xy: data.xy});
   });
+
+  socket.on('disconnect', function () {
+    io.sockets.in('server').emit('disconnectPlayer', {playerId: socket.id});
+
+    log.warn('User disconnected with ID: ' + socket.id);
+  });
 };
 
 SnookerLiveServer.prototype.setupUser = function (socket, data) {

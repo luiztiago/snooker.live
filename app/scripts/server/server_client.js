@@ -53,6 +53,10 @@
     instance.socket.on('movePlayer', function (data) {
       instance.movePlayer(data.playerId, data.xy);
     });
+
+    instance.socket.on('disconnectPlayer', function (data) {
+      instance.disconnectPlayer(data.playerId);
+    });
   };
 
   SnookerLiveServerClient.prototype.prepareStage = function () {
@@ -78,6 +82,13 @@
       left: xy[0],
       top: xy[1]
     }, 300, 'ease-out');
+  };
+
+  SnookerLiveServerClient.prototype.disconnectPlayer = function (playerId) {
+    var instance = this;
+    console.log('bye' + playerId, $('#player-' + playerId));
+
+    $('#player-' + playerId).remove();
   };
 
   new SnookerLiveServerClient();
