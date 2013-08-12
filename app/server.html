@@ -19,7 +19,8 @@
 <!-- endbuild -->
 </head>
 <body>
-  <div class="container">
+  <div class="status-message"></div>
+  <div id="container" class="disabled">
     <aside id="ranking">
       <div class="content">
         <h2>Ranking</h2>
@@ -47,12 +48,11 @@
           <li>Deyvidson</li>
           <li>Wilker Silva</li>
           <li>Guilherme Lalala</li>
-
         </ol>
       </div>
     </aside>
 
-    <aside class="breath"></aside>
+    <aside id="breath"></aside>
 
     <section id="snooker">
       <span class="hole one"></span>
@@ -65,16 +65,10 @@
     </section>
   </div>
 
-  <!--[if lt IE 7]>
-  <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
-  <![endif]-->
-
-  <!-- build:js scripts/main.js -->
-  <script src="bower_components/jquery/jquery.js"></script>
-  <!-- endbuild -->
+  <script src="bower_components/zepto/zepto.min.js"></script>
 
   <script src="//pejs:4000/socket.io/socket.io.js"></script>
-  <script>var socket = io.connect('//pejs:4000');</script>
+  <script src="scripts/config.js"></script>
   <script src="scripts/server/server_client.js"></script>
 </body>
 </html>
