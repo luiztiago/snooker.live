@@ -4,6 +4,11 @@ var config = require('../config.js').CONFIG,
     STORAGE = {};
 
 var SnookerLiveServer = function (config) {
+  this.applyConfig()
+  this.bootstrap();
+};
+
+SnookerLiveServer.prototype.applyConfig = function () {
   io.configure('production', function() {
     io.enable('browser client minification');
     io.enable('browser client etag');
@@ -21,15 +26,12 @@ var SnookerLiveServer = function (config) {
   io.configure('development', function() {
     io.set('transports', ['websocket']);
   });
-
-  this.bootstrap();
 };
 
 SnookerLiveServer.prototype.bootstrap = function () {
   var instance = this;
 
   io.sockets.on('connection', function (socket) {
-    instance.whoAreYou(socket);
     instance.handlers(socket);
   });
 };
@@ -42,27 +44,21 @@ SnookerLiveServer.prototype.handlers = function (socket) {
   });
 };
 
-SnookerLiveServer.prototype.whoAreYou = function (socket) {
-  var instance = this;
-
-  socket.emit('whoami', {status: true});
-};
-
 SnookerLiveServer.prototype.setupUser = function (socket, data) {
   var instance = this;
 
   if (data.type == 'server') {
-    socket.set('live', true);
     socket.join('server');
 
     log.info("New server window started with ID: " + socket.id);
   }
-  else if (data.type == 'user') {
-    socket.set('live', true);
+  else {
     socket.join('user');
 
     log.info("New user connected in user's channel width ID: " + socket.id);
   }
+
+  socket.emit('welcome', {status: true});
 };
 
 new SnookerLiveServer(config);
