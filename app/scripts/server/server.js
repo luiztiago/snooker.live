@@ -1,5 +1,5 @@
-var config = require('../config.js').CONFIG,
-    io = require('socket.io').listen(4000),
+var config = require('../config.js').SNOOKER_CONFIG,
+    io = require('socket.io').listen(config.port),
     log = require("cli-log").init({ prefix: '[SnookerLive]', prefixColor: 'cyan', prefixBgColor: 'bgCyan' }),
     STORAGE = {};
 
