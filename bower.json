@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "dependencies": {
     "modernizr": "~2.6.2",
-    "zepto": ">=1.0.0"
+    "zepto": ">=1.0.0",
+    "normalize-css": "~2.1.2"
   },
   "devDependencies": {}
 }
