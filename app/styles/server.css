@@ -150,8 +150,24 @@ body,
   color: #c5c5c5;
   font-size: 4em;
 }
+/* line 144, sass/sass/server.scss */
+#snooker .player {
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  border-radius: 50%;
+  width: 10%;
+  width: 10%;
+  display: block;
+  text-indent: -2000px;
+  background: #ff7c06;
+  position: absolute;
+  left: 45%;
+  top: 45%;
+}
 
-/* line 146, sass/sass/server.scss */
+/* line 159, sass/sass/server.scss */
 .disabled {
   opacity: 0.3;
 }

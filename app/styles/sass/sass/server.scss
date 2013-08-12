@@ -140,6 +140,19 @@ body,
     color: #c5c5c5;
     font-size: 4em;
   }
+
+  .player {
+    @include border-radius(50%);
+
+    width: 10%;
+    width: 10%;
+    display: block;
+    text-indent: -2000px;
+    background: $orange;
+    position: absolute;
+    left: 45%;
+    top: 45%;
+  }
 }
 
 // Useful Classes

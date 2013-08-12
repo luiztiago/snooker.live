@@ -42,6 +42,10 @@ SnookerLiveServer.prototype.handlers = function (socket) {
   socket.on('whoami', function (data) {
     instance.setupUser(socket, data);
   });
+
+  socket.on('movePlayer', function (data) {
+    io.sockets.in('server').emit('movePlayer', {playerId: data.playerId, xy: data.xy});
+  });
 };
 
 SnookerLiveServer.prototype.setupUser = function (socket, data) {
@@ -55,10 +59,12 @@ SnookerLiveServer.prototype.setupUser = function (socket, data) {
   else {
     socket.join('user');
 
+    io.sockets.in('server').emit('createPlayer', {id: socket.id});
+
     log.info("New user connected in user's channel width ID: " + socket.id);
   }
 
-  socket.emit('welcome', {status: true});
+  socket.emit('welcome', {status: true, id: socket.id});
 };
 
 new SnookerLiveServer(config);

@@ -10,50 +10,17 @@
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
   <link rel="stylesheet" href="bower_components/normalize-css/normalize.css">
-  <link rel="stylesheet" href="styles/server.css">
   <script src="bower_components/modernizr/modernizr.js"></script>
-
-  <!-- Templates -->
-  <script id="tpl-player" type="text/x-handlebars-template">
-    <span class="player" id="player-{{id}}">{{id}}</div>
-  </script>
-
-  <script id="tpl-ranking" type="text/x-handlebars-template">
-    <ol>
-      {{#each players}}
-      <li>{{name}}</li>
-      {{/each}}
-    </ol>
-  </script>
-
 </head>
 <body>
-  <div class="status-message"></div>
-  <div id="container" class="disabled">
-    <aside id="ranking">
-      <div class="content">
-        <h2>Ranking</h2>
-      </div>
-    </aside>
+  <div id="output">
 
-    <aside id="breath"></aside>
-
-    <section id="snooker">
-      <span class="hole one"></span>
-      <span class="hole two"></span>
-      <div id="dumb-area">
-        Noob :)
-      </div>
-      <span class="hole three"></span>
-      <span class="hole four"></span>
-    </section>
   </div>
-
   <script src="bower_components/zepto/zepto.min.js"></script>
   <script src="bower_components/handlebars.js/dist/handlebars.js"></script>
 
   <script src="//pejs:4000/socket.io/socket.io.js"></script>
   <script src="scripts/config.js"></script>
-  <script src="scripts/server/server_client.js"></script>
+  <script src="scripts/client.js"></script>
 </body>
 </html>

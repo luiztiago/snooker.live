@@ -4,7 +4,8 @@
   "dependencies": {
     "modernizr": "~2.6.2",
     "zepto": ">=1.0.0",
-    "normalize-css": "~2.1.2"
+    "normalize-css": "~2.1.2",
+    "handlebars.js": "~1.0.0"
   },
   "devDependencies": {}
 }

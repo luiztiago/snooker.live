@@ -10,7 +10,6 @@
 
   SnookerLiveServerClient.prototype.checkForStart = function () {
     if (SNOOKER_CONFIG.autoStart) {
-      this.socket = io.connect(SNOOKER_CONFIG.address);
       this.connect();
     }
     else {
@@ -32,9 +31,11 @@
   SnookerLiveServerClient.prototype.connect = function () {
     var instance = this;
 
-    socket.emit('whoami', {type: 'server'});
+    this.socket = io.connect(SNOOKER_CONFIG.address);
 
-    socket.on('welcome', function (data) {
+    instance.socket.emit('whoami', {type: 'server'});
+
+    instance.socket.on('welcome', function (data) {
       if (data.status) {
         instance.handlers();
         instance.prepareStage();
@@ -44,6 +45,14 @@
 
   SnookerLiveServerClient.prototype.handlers = function () {
     var instance = this;
+
+    instance.socket.on('createPlayer', function (data) {
+      instance.createPlayer(data);
+    });
+
+    instance.socket.on('movePlayer', function (data) {
+      instance.movePlayer(data.playerId, data.xy);
+    });
   };
 
   SnookerLiveServerClient.prototype.prepareStage = function () {
@@ -51,6 +60,24 @@
 
     instance.container.removeClass('disabled');
     instance.statusMessage.hide();
+  };
+
+  SnookerLiveServerClient.prototype.createPlayer = function(data) {
+    var instance = this,
+        userTemplate = Handlebars.compile($('#tpl-player').html());
+
+    instance.snooker.append(userTemplate({
+      id: data.id
+    }));
+  };
+
+  SnookerLiveServerClient.prototype.movePlayer = function (playerId, xy) {
+    var instance = this;
+
+    $('#player-' + playerId).animate({
+      left: xy[0],
+      top: xy[1]
+    }, 300, 'ease-out');
   };
 
   new SnookerLiveServerClient();
