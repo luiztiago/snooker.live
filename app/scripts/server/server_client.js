@@ -95,19 +95,34 @@
     instance.movePlayer({playerId: data.playerId, xy: [45 - (Math.random() + (Math.random() * 8)) + '%', (Math.random() + (Math.random() * 10)) + 44 + '%']})
   };
 
+  SnookerLiveServerClient.prototype.sortObject = function (o) {
+     var a = [],i;
+     for(i in o){
+       if(o.hasOwnProperty(i)){
+           a.push([i,o[i]]);
+       }
+     }
+     a.sort(function(a,b){ return a[1]>b[1]?1:-1; })
+
+     return a;
+  };
+
+
   SnookerLiveServerClient.prototype.updateRanking = function (data) {
     var instance = this;
+    var items = '';
 
     instance.socket.emit('updateRanking');
 
     instance.socket.on('updateRanking', function (data) {
       var items = '';
+      var sorted = _.pluck(_.sortBy(data, function(i) { return i.score; }), "id").reverse();
 
-      $.each(data, function (index, item) {
-        items += '<li>' + index + '</li>';
+      sorted = sorted.map(function (item) {
+        return '<li>' + item + '</li>';
       });
 
-      instance.ranking.find('ul').html(items);
+      instance.ranking.find('ul').html(sorted.join(''));
     });
   };
 

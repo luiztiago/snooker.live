@@ -9,7 +9,7 @@
       started: false,
       question: 0
     },
-    GAME_STORAGE = {};
+    GAME_STORAGE = [];
 
 var SnookerLiveServer = function (config) {
   this.applyConfig()
@@ -89,11 +89,11 @@ SnookerLiveServer.prototype.handlers = function (socket) {
     var answer = data.answer;
     var player = data.playerId;
 
-    instance.logRanking();
-
-    if (GAME_SETTINGS.question.answer === answer) {
-      GAME_STORAGE[player] += 1;
-    }
+    GAME_STORAGE.forEach(function (item, index) {
+      if ((item.id == player) && (GAME_SETTINGS.question.answer === answer)) {
+        GAME_STORAGE[index].score += 1;
+      }
+    });
   });
 
   socket.on('updateRanking', function () {
@@ -103,7 +103,9 @@ SnookerLiveServer.prototype.handlers = function (socket) {
   socket.on('disconnect', function () {
     io.sockets.in('server').emit('disconnectPlayer', {playerId: socket.player_id});
 
-    delete GAME_STORAGE[socket.player_id];
+    GAME_STORAGE = GAME_STORAGE.filter(function(obj) {
+      return socket.player_id !== obj.id;
+    });
 
     log.warn('User disconnected with ID: ' + socket.player_id);
   });
@@ -115,16 +117,11 @@ SnookerLiveServer.prototype.handlers = function (socket) {
   socket.on('serverTimeout', function () {
     io.sockets.in('user').emit('timeout', {status: true});
     io.sockets.in('server').emit('timeout', {status: true});
+
+    instance.updateRanking();
   });
 };
 
-SnookerLiveServer.prototype.logRanking = function () {
-  var instance = this;
-
-  for (index in GAME_STORAGE) {
-    log.info(index + ' - ' + GAME_STORAGE[index]);
-  }
-};
 
 SnookerLiveServer.prototype.updateRanking = function () {
   var instance = this;
@@ -143,11 +140,11 @@ SnookerLiveServer.prototype.setupUser = function (socket, data) {
   else {
 
     var PLAYER_ID = ++TOTAL_PLAYERS;
-
-    socket.join('user');
     socket.player_id = PLAYER_ID;
 
-    GAME_STORAGE[PLAYER_ID] = 0;
+    socket.join('user');
+
+    GAME_STORAGE.push({id: PLAYER_ID, score: 0});
 
     io.sockets.in('server').emit('createPlayer', {playerId: PLAYER_ID});
 
