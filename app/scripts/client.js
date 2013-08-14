@@ -14,9 +14,10 @@ var SnookerLiveClient = (function(){
 
 			_self.socket.on('welcome', function (data) {
 				_self.id = data.id;
+				document.querySelector('#id').innerHTML = _self.id;
 			});
 
-			_self.socket.on('newquestion', function (data) {
+			_self.socket.on('newQuestion', function (data) {
 				Snooker.waitDialog('hidden');
 				_self.interval = setInterval(function(){ _self.emitPosition() }, 2000);
 			});
