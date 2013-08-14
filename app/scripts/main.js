@@ -35,9 +35,6 @@ var Snooker = (function(){
 			beta = Math.round(e.beta);
 			gamma = Math.round(e.gamma);
 
-			// document.getElementById("b").innerHTML = beta;
-			// document.getElementById("g").innerHTML = gamma;
-
 			oldPosX = parseInt(document.getElementsByClassName('ball')[0].style.marginLeft.replace('px',''), 10) || 0;
 			oldPosY = parseInt(document.getElementsByClassName('ball')[0].style.marginTop.replace('px',''), 10) || 0;
 
@@ -52,14 +49,10 @@ var Snooker = (function(){
 
 			posY = (posY >= (screenHeight - ballSize)) ? screenHeight - ballSize : posY;
 			posY = (posY <= -(screenHeight - ballSize)) ? -(screenHeight) : posY;
-			// posY = (posY >= (screenHeight / 2)) ? screenHeight : posY;
-			// posY = (posY <= (screenHeight / 2)) ? 0 : posY;
 
 			document.getElementsByClassName('ball')[0].style.marginLeft = parseInt(posX, 10) + "px";
 			document.getElementsByClassName('ball')[0].style.marginTop = parseInt(posY, 10) + "px";
 
-			// document.getElementById("posX").innerHTML = parseInt(posX, 10);
-			// document.getElementById("posY").innerHTML = parseInt(posY, 10);
 		}
 	};
 })();

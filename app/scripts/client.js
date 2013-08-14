@@ -1,42 +1,35 @@
-var SnookerLiveClient = function () {
-	this.bootstrap();
-};
+var SnookerLiveClient = (function(){
 
-SnookerLiveClient.prototype.bootstrap = function () {
-	this.checkForStart();
-};
+	var interval,
+		screenWidth = document.documentElement.clientWidth,
+		screenHeight = document.documentElement.clientHeight;
 
-SnookerLiveClient.prototype.checkForStart = function () {
-	if (SNOOKER_CONFIG.autoStart) {
-		this.connect();
+	return {
+		connect: function(){
+			var _self = this;
+
+			_self.interval = setInterval(function(){ _self.emitPosition() }, 2000);
+
+			_self.socket = io.connect(SNOOKER_CONFIG.address);
+
+			_self.socket.emit('whoami', {type: 'user'});
+
+			_self.socket.on('welcome', function (data) {
+				_self.id = data.id;
+			});
+		},
+		emitPosition: function(){
+			var _self = this;
+
+			var x, y;
+
+			x = parseFloat(document.querySelector('.ball').offsetLeft / screenWidth * 100).toFixed(2) + "%";
+			y = parseFloat(document.querySelector('.ball').offsetTop / screenWidth * 100).toFixed(2) + "%";
+
+			_self.socket.emit('movePlayer', { playerId: _self.id, xy: [x, y] });
+		}
 	}
-	else {
-		setTimeout(function () {
-			window.location.href = '';
-		}, SNOOKER_CONFIG.timers.startup);
-	}
-};
 
-SnookerLiveClient.prototype.connect = function () {
-	var instance = this;
+})();
 
-	instance.socket = io.connect(SNOOKER_CONFIG.address);
-
-	instance.socket.emit('whoami', {type: 'user'});
-
-	instance.socket.on('welcome', function (data) {
-		instance.id = data.id;
-
-		setInterval(function () {
-			x = Math.floor(Math.random()*99) + '%';
-			y = Math.floor(Math.random()*99) + '%';
-
-			console.log('Moving....', x, y, instance.id);
-			instance.socket.emit('movePlayer', {playerId: instance.id, xy: [x,y]})
-		}, 2000);
-
-		document.querySelector('#output').innerHTML = 'User: ' + data.id;
-	});
-};
-
-new SnookerLiveClient();
+SnookerLiveClient.connect();
