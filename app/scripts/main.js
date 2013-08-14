@@ -38,9 +38,6 @@ var Snooker = (function(){
 			oldPosX = parseInt(document.getElementsByClassName('ball')[0].style.marginLeft.replace('px',''), 10) || 0;
 			oldPosY = parseInt(document.getElementsByClassName('ball')[0].style.marginTop.replace('px',''), 10) || 0;
 
-			console.log(factorX, factorY);
-			console.log(oldPosX, oldPosY);
-
 			posX = (gamma * factorX) + oldPosX;
 			posY = (beta * factorY) + oldPosY;
 
