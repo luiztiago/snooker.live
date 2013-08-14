@@ -15,19 +15,18 @@
         <!-- endbuild -->
         </head>
     <body>
-        <div class="container">
-            <span class="ball"></span>
-            <p id="a">a</p>
-            <p id="b">b</p>
-            <p id="g">g</p>
+        <span class="ball"></span>
+        <div class="answers">
+            <span id="answer-a">A</span>
+            <span id="answer-b">B</span>
+            <span id="answer-c">C</span>
+            <span id="answer-d">D</span>
         </div>
 
-        <!--[if lt IE 7]>
-            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
-        <![endif]-->
-
         <!-- build:js scripts/main.js -->
-        <script src="bower_components/zepto/zepto.js"></script>
+        <script src="//pejs:4000/socket.io/socket.io.js"></script>
+        <script src="scripts/config.js"></script>
+        <script src="scripts/client.js"></script>
         <script src="scripts/main.js"></script>
         <!-- endbuild -->
 </body>

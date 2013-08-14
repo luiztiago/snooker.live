@@ -5,42 +5,61 @@ var Snooker = (function(){
 		 */
 		maxBeta = 180,
 		maxGamma = 90,
+		ballSize = 50,
+		factorX,
+		factorY,
 		alpha,
 		beta,
 		gamma,
 		posX,
-		poxY;
+		poxY,
+		oldPosX,
+		oldPosY,
+		screenWidth,
+		screenHeight;
 
 	return {
 		setup: function(){
 			if (window.DeviceOrientationEvent) {
-				// Listen for the deviceorientation event and handle the raw data
 				window.addEventListener('deviceorientation', this.deviceOrientationHandler);
 			} else {
 				alert("DeviceOrientation not supported");
 			}
-			this.deviceOrientationHandler({beta: 90, gamma: 50});
+			screenWidth = document.documentElement.clientWidth / 2;
+			screenHeight = document.documentElement.clientHeight / 2;
+
+			factorX = parseInt(screenWidth * 2 / maxBeta, 10);
+			factorY = parseInt(screenHeight * 2 / maxBeta, 10);
 		},
 		deviceOrientationHandler: function(e){
-			console.log(e);
-			alpha = Math.round(e.alpha);
 			beta = Math.round(e.beta);
 			gamma = Math.round(e.gamma);
 
-			document.getElementById("a").innerHTML = alpha;
-			document.getElementById("b").innerHTML = beta;
-			document.getElementById("g").innerHTML = gamma;
+			// document.getElementById("b").innerHTML = beta;
+			// document.getElementById("g").innerHTML = gamma;
 
-			posX = (gamma + maxGamma) / (maxGamma * 2) * 100;
-			posY = (beta + maxBeta) / (maxBeta * 2) * 100;
+			oldPosX = parseInt(document.getElementsByClassName('ball')[0].style.marginLeft.replace('px',''), 10) || 0;
+			oldPosY = parseInt(document.getElementsByClassName('ball')[0].style.marginTop.replace('px',''), 10) || 0;
 
-			posX = (posX > 100) ? 100 : posX;
-			posX = (posX < 0) ? 0 : posX;
-			posY = (posY > 100) ? 100 : posY;
-			posY = (posY < 0) ? 0 : posY;
+			console.log(factorX, factorY);
+			console.log(oldPosX, oldPosY);
 
-			document.getElementsByClassName('ball')[0].style.left = posX + "%";
-			document.getElementsByClassName('ball')[0].style.top = posY + "%";
+			posX = (gamma * factorX) + oldPosX;
+			posY = (beta * factorY) + oldPosY;
+
+			posX = (posX >= (screenWidth - ballSize)) ? screenWidth - ballSize : posX;
+			posX = (posX <= -(screenWidth - ballSize)) ? -(screenWidth) : posX;
+
+			posY = (posY >= (screenHeight - ballSize)) ? screenHeight - ballSize : posY;
+			posY = (posY <= -(screenHeight - ballSize)) ? -(screenHeight) : posY;
+			// posY = (posY >= (screenHeight / 2)) ? screenHeight : posY;
+			// posY = (posY <= (screenHeight / 2)) ? 0 : posY;
+
+			document.getElementsByClassName('ball')[0].style.marginLeft = parseInt(posX, 10) + "px";
+			document.getElementsByClassName('ball')[0].style.marginTop = parseInt(posY, 10) + "px";
+
+			// document.getElementById("posX").innerHTML = parseInt(posX, 10);
+			// document.getElementById("posY").innerHTML = parseInt(posY, 10);
 		}
 	};
 })();
