@@ -50,6 +50,13 @@ var Snooker = (function(){
 			document.getElementsByClassName('ball')[0].style.marginLeft = parseInt(posX, 10) + "px";
 			document.getElementsByClassName('ball')[0].style.marginTop = parseInt(posY, 10) + "px";
 
+		},
+		waitDialog: function(type){
+			if(type == 'show') {
+				document.querySelector('.dialog').style.display = 'block';
+			} else {
+				document.querySelector('.dialog').style.display = 'none';
+			}
 		}
 	};
 })();
