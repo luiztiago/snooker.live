@@ -30,13 +30,15 @@ var Snooker = (function(){
 
 			factorX = parseInt(screenWidth * 2 / maxBeta, 10);
 			factorY = parseInt(screenHeight * 2 / maxBeta, 10);
+
+			this.waitDialog('show');
 		},
 		deviceOrientationHandler: function(e){
 			beta = Math.round(e.beta);
 			gamma = Math.round(e.gamma);
 
-			oldPosX = parseInt(document.getElementsByClassName('ball')[0].style.marginLeft.replace('px',''), 10) || 0;
-			oldPosY = parseInt(document.getElementsByClassName('ball')[0].style.marginTop.replace('px',''), 10) || 0;
+			oldPosX = parseInt(document.querySelector('.ball').style.marginLeft.replace('px',''), 10) || 0;
+			oldPosY = parseInt(document.querySelector('.ball').style.marginTop.replace('px',''), 10) || 0;
 
 			posX = (gamma * factorX) + oldPosX;
 			posY = (beta * factorY) + oldPosY;
@@ -47,15 +49,17 @@ var Snooker = (function(){
 			posY = (posY >= (screenHeight - ballSize)) ? screenHeight - ballSize : posY;
 			posY = (posY <= -(screenHeight - ballSize)) ? -(screenHeight) : posY;
 
-			document.getElementsByClassName('ball')[0].style.marginLeft = parseInt(posX, 10) + "px";
-			document.getElementsByClassName('ball')[0].style.marginTop = parseInt(posY, 10) + "px";
+			document.querySelector('.ball').style.marginLeft = parseInt(posX, 10) + "px";
+			document.querySelector('.ball').style.marginTop = parseInt(posY, 10) + "px";
 
 		},
 		waitDialog: function(type){
 			if(type == 'show') {
 				document.querySelector('.wait').style.display = 'block';
+				document.querySelector('.ball').style.visibility = 'hidden';
 			} else {
 				document.querySelector('.wait').style.display = 'none';
+				document.querySelector('.ball').style.visibility = 'visible';
 			}
 		}
 	};
