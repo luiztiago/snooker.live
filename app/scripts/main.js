@@ -53,9 +53,9 @@ var Snooker = (function(){
 		},
 		waitDialog: function(type){
 			if(type == 'show') {
-				document.querySelector('.dialog').style.display = 'block';
+				document.querySelector('.wait').style.display = 'block';
 			} else {
-				document.querySelector('.dialog').style.display = 'none';
+				document.querySelector('.wait').style.display = 'none';
 			}
 		}
 	};

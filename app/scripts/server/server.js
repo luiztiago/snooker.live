@@ -42,31 +42,10 @@ SnookerLiveServer.prototype.bootstrap = function () {
   io.sockets.on('connection', function (socket) {
     instance.handlers(socket);
   });
-
-  instance.resetStartupTimer();
-};
-
-SnookerLiveServer.prototype.resetStartupTimer = function () {
-  var instance = this;
-
-  if (!GAME_SETTINGS.started) {
-    clearTimeout(TIMER_STARTUP);
-
-    TIMER_STARTUP = setTimeout(function () {
-      if (GAME_STORAGE.length >= config.minPlayers) {
-        instance.startGame();
-      }
-
-      log.info("Waiting for players...");
-    }, config.timers.startup);
-  }
 };
 
 SnookerLiveServer.prototype.startGame = function () {
   var instance = this;
-
-  clearTimeout(TIMER_STARTUP);
-  clearTimeout(TIMER_QUESTION);
 
   var question = instance.generateQuestion();
 
@@ -83,15 +62,6 @@ SnookerLiveServer.prototype.newQuestion = function (question) {
 
   io.sockets.in('user').emit('newQuestion', {question: question});
   io.sockets.in('server').emit('newQuestion', {question: question});
-
-  TIMER_QUESTION = setTimeout(function () {
-    io.sockets.in('user').emit('timeout', {status: true});
-
-    setTimeout(function () {
-      instance.startGame();
-    }, config.timers.newGame);
-
-  }, (config.timers.question * 1000));
 };
 
 SnookerLiveServer.prototype.generateQuestion = function () {
@@ -119,7 +89,9 @@ SnookerLiveServer.prototype.handlers = function (socket) {
     var answer = data.answer;
     var player = data.playerId;
 
-    if (GAME_SETTINGS.question.answer == answer) {
+    instance.logRanking();
+
+    if (GAME_SETTINGS.question.answer === answer) {
       GAME_STORAGE[player] += 1;
     }
   });
@@ -135,6 +107,23 @@ SnookerLiveServer.prototype.handlers = function (socket) {
 
     log.warn('User disconnected with ID: ' + socket.player_id);
   });
+
+  socket.on('serverStart', function () {
+    instance.startGame();
+  });
+
+  socket.on('serverTimeout', function () {
+    io.sockets.in('user').emit('timeout', {status: true});
+    io.sockets.in('server').emit('timeout', {status: true});
+  });
+};
+
+SnookerLiveServer.prototype.logRanking = function () {
+  var instance = this;
+
+  for (index in GAME_STORAGE) {
+    log.info(index + ' - ' + GAME_STORAGE[index]);
+  }
 };
 
 SnookerLiveServer.prototype.updateRanking = function () {
@@ -161,8 +150,6 @@ SnookerLiveServer.prototype.setupUser = function (socket, data) {
     GAME_STORAGE[PLAYER_ID] = 0;
 
     io.sockets.in('server').emit('createPlayer', {playerId: PLAYER_ID});
-
-    instance.resetStartupTimer();
 
     log.info("New user connected in user's channel width ID: " + PLAYER_ID);
   }

@@ -8,6 +8,7 @@
     this.container = $("#container");
     this.ranking = $("#ranking");
     this.snooker = $("#snooker");
+    this.timerArea = $('#timer-area');
     this.statusMessage = $(".status-message");
   };
 
@@ -48,23 +49,38 @@
     instance.socket.on('newQuestion', function (data) {
       instance.newQuestion(data);
     });
+
+    instance.socket.on('timeout', function () {
+      instance.onTimeout();
+    });
+  };
+
+  SnookerLiveServerClient.prototype.onTimeout = function (data) {
+    var instance = this;
+
+    instance.timerArea.text('Resposta correta: ' + instance.question.opts[instance.question.answer]);
+    instance.timerArea.show();
+
+    $('.hole.one', '.hole.two', '.hole.three', '.hole.four').html('');
+
+    instance.updateRanking();
   };
 
   SnookerLiveServerClient.prototype.newQuestion = function (data) {
     var instance = this;
-    var timerArea = $('#timer-area');
     var q = data.question;
-    var questionTimer = SNOOKER_CONFIG.timers.question;
 
     instance.question = q;
 
-    timerArea.text(q.question);
-    timerArea.show();
+    instance.timerArea.text(q.question);
+    instance.timerArea.show();
 
     $('.hole.one').html(q.opts[0]);
     $('.hole.two').html(q.opts[1]);
     $('.hole.three').html(q.opts[2]);
     $('.hole.four').html(q.opts[3]);
+
+    $('.player').css({top: '50%', left: '50%'});
   };
 
   SnookerLiveServerClient.prototype.createPlayer = function(data) {
@@ -112,5 +128,13 @@
     instance.updateRanking();
   };
 
-  new SnookerLiveServerClient();
+  SnookerLiveServerClient.prototype.start = function () {
+    this.socket.emit('serverStart');
+  };
+
+  SnookerLiveServerClient.prototype.timeout = function () {
+    this.socket.emit('serverTimeout');
+  };
+
+  window.SnookerLiveServerClient = new SnookerLiveServerClient();
 })(window, Zepto);
