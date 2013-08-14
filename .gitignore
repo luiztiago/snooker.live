@@ -4,3 +4,4 @@ dist
 .sass-cache
 app/bower_components
 app/scripts/config.js
+app/scripts/config_example.js
