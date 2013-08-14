@@ -44,6 +44,27 @@
     instance.socket.on('disconnectPlayer', function (data) {
       instance.disconnectPlayer(data.playerId);
     });
+
+    instance.socket.on('newQuestion', function (data) {
+      instance.newQuestion(data);
+    });
+  };
+
+  SnookerLiveServerClient.prototype.newQuestion = function (data) {
+    var instance = this;
+    var timerArea = $('#timer-area');
+    var q = data.question;
+    var questionTimer = SNOOKER_CONFIG.timers.question;
+
+    instance.question = q;
+
+    timerArea.text(q.question);
+    timerArea.show();
+
+    $('.hole.one').html(q.opts[0]);
+    $('.hole.two').html(q.opts[1]);
+    $('.hole.three').html(q.opts[2]);
+    $('.hole.four').html(q.opts[3]);
   };
 
   SnookerLiveServerClient.prototype.createPlayer = function(data) {
@@ -55,6 +76,7 @@
     }));
 
     instance.updateRanking();
+    instance.movePlayer({playerId: data.playerId, xy: [45 - (Math.random() + (Math.random() * 8)) + '%', (Math.random() + (Math.random() * 10)) + 44 + '%']})
   };
 
   SnookerLiveServerClient.prototype.updateRanking = function (data) {
