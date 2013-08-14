@@ -6,9 +6,10 @@ body,
   min-height: 100%;
   width: 100%;
   min-width: 100%;
+  overflow: hidden;
 }
 
-/* line 18, sass/sass/server.scss */
+/* line 19, sass/sass/server.scss */
 .status-message {
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -29,7 +30,7 @@ body,
   z-index: 2;
 }
 
-/* line 37, sass/sass/server.scss */
+/* line 38, sass/sass/server.scss */
 #ranking,
 #snooker,
 #breath {
@@ -39,7 +40,7 @@ body,
   padding: 0;
   margin: 0;
 }
-/* line 45, sass/sass/server.scss */
+/* line 46, sass/sass/server.scss */
 #ranking .content h2,
 #snooker .content h2,
 #breath .content h2 {
@@ -49,65 +50,55 @@ body,
   text-align: center;
   color: white;
 }
-/* line 53, sass/sass/server.scss */
-#ranking .content ol,
-#snooker .content ol,
-#breath .content ol {
+/* line 54, sass/sass/server.scss */
+#ranking .content ul,
+#snooker .content ul,
+#breath .content ul {
   padding: 0;
   margin: 0;
   counter-reset: item;
   list-style-position: inside;
   list-style-type: decimal;
 }
-/* line 60, sass/sass/server.scss */
-#ranking .content ol li,
-#snooker .content ol li,
-#breath .content ol li {
-  padding: 10px 0 10px 45px;
+/* line 61, sass/sass/server.scss */
+#ranking .content ul li,
+#snooker .content ul li,
+#breath .content ul li {
+  padding: 10px;
   background: #e2e2e2;
   position: relative;
   display: block;
 }
-/* line 66, sass/sass/server.scss */
-#ranking .content ol li:before,
-#snooker .content ol li:before,
-#breath .content ol li:before {
-  background: #333;
-  color: white;
-  content: counter(item);
-  counter-increment: item;
-  height: 20px;
-  left: 5px;
-  padding: 5px 5px 2px 5px;
-  position: absolute;
-  text-align: center;
-  top: 5px;
-  width: 20px;
+/* line 67, sass/sass/server.scss */
+#ranking .content ul li:first-child,
+#snooker .content ul li:first-child,
+#breath .content ul li:first-child {
+  background: #999;
 }
-/* line 80, sass/sass/server.scss */
-#ranking .content ol li:nth-child(2n+2),
-#snooker .content ol li:nth-child(2n+2),
-#breath .content ol li:nth-child(2n+2) {
+/* line 71, sass/sass/server.scss */
+#ranking .content ul li:nth-child(2n+2),
+#snooker .content ul li:nth-child(2n+2),
+#breath .content ul li:nth-child(2n+2) {
   background: #eee;
 }
 
-/* line 88, sass/sass/server.scss */
+/* line 79, sass/sass/server.scss */
 #ranking {
   width: 14%;
   background: #f4f4f4;
 }
 
-/* line 93, sass/sass/server.scss */
+/* line 84, sass/sass/server.scss */
 #breath {
   width: 1%;
   background: #333;
 }
 
-/* line 98, sass/sass/server.scss */
+/* line 89, sass/sass/server.scss */
 #snooker {
   width: 85%;
 }
-/* line 104, sass/sass/server.scss */
+/* line 95, sass/sass/server.scss */
 #snooker .one,
 #snooker .two,
 #snooker .three,
@@ -116,31 +107,31 @@ body,
   width: 20%;
   height: 20%;
 }
-/* line 110, sass/sass/server.scss */
+/* line 101, sass/sass/server.scss */
 #snooker .one {
   top: 0;
   left: 0;
   background-color: #41b1a6;
 }
-/* line 116, sass/sass/server.scss */
+/* line 107, sass/sass/server.scss */
 #snooker .two {
   top: 0;
   right: 0;
   background-color: #6cd058;
 }
-/* line 122, sass/sass/server.scss */
+/* line 113, sass/sass/server.scss */
 #snooker .three {
   bottom: 0;
   left: 0;
   background-color: #f24e5a;
 }
-/* line 128, sass/sass/server.scss */
+/* line 119, sass/sass/server.scss */
 #snooker .four {
   bottom: 0;
   right: 0;
   background-color: #ff7c06;
 }
-/* line 134, sass/sass/server.scss */
+/* line 125, sass/sass/server.scss */
 #snooker #dumb-area {
   position: absolute;
   width: 20%;
@@ -150,24 +141,24 @@ body,
   color: #c5c5c5;
   font-size: 4em;
 }
-/* line 144, sass/sass/server.scss */
+/* line 135, sass/sass/server.scss */
 #snooker .player {
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  -ms-border-radius: 50%;
-  -o-border-radius: 50%;
-  border-radius: 50%;
-  width: 10%;
-  width: 10%;
+  -webkit-border-radius: 100%;
+  -moz-border-radius: 100%;
+  -ms-border-radius: 100%;
+  -o-border-radius: 100%;
+  border-radius: 100%;
+  width: 50px;
+  height: 44px;
+  padding-top: 6px;
   display: block;
-  text-indent: -2000px;
-  background: #ff7c06;
+  background: black;
   position: absolute;
+  color: white;
+  text-align: center;
+  font-size: 2em;
+  font-weight: bold;
   left: 45%;
   top: 45%;
-}
-
-/* line 159, sass/sass/server.scss */
-.disabled {
-  opacity: 0.3;
+  transition: all 0.5s linear;
 }

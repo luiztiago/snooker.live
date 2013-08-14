@@ -19,20 +19,18 @@
   </script>
 
   <script id="tpl-ranking" type="text/x-handlebars-template">
-    <ol>
-      {{#each players}}
-      <li>{{name}}</li>
-      {{/each}}
-    </ol>
+    <li>{{name}}</li>
   </script>
 
 </head>
 <body>
-  <div class="status-message"></div>
-  <div id="container" class="disabled">
+  <div id="container">
     <aside id="ranking">
       <div class="content">
         <h2>Ranking</h2>
+        <ul>
+        </ul>
+
       </div>
     </aside>
 

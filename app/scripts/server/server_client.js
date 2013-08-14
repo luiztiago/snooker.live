@@ -1,24 +1,7 @@
 (function (window, $) {
   var SnookerLiveServerClient = function () {
-    this.bootstrap();
-  };
-
-  SnookerLiveServerClient.prototype.bootstrap = function () {
     this.setDOMItems();
-    this.checkForStart();
-  };
-
-  SnookerLiveServerClient.prototype.checkForStart = function () {
-    if (SNOOKER_CONFIG.autoStart) {
-      this.connect();
-    }
-    else {
-      this.statusMessage.html(SNOOKER_CONFIG.messages.welcome_message);
-
-      setTimeout(function () {
-        window.location.href = '';
-      }, SNOOKER_CONFIG.timers.startup);
-    }
+    this.connect();
   };
 
   SnookerLiveServerClient.prototype.setDOMItems = function () {
@@ -38,7 +21,7 @@
     instance.socket.on('welcome', function (data) {
       if (data.status) {
         instance.handlers();
-        instance.prepareStage();
+        instance.updateRanking();
       }
     });
   };
@@ -51,7 +34,11 @@
     });
 
     instance.socket.on('movePlayer', function (data) {
-      instance.movePlayer(data.playerId, data.xy);
+      if (!$('#player-' + data.playerId).length) {
+        instance.createPlayer(data);
+      }
+
+      instance.movePlayer(data);
     });
 
     instance.socket.on('disconnectPlayer', function (data) {
@@ -59,36 +46,48 @@
     });
   };
 
-  SnookerLiveServerClient.prototype.prepareStage = function () {
-    var instance = this;
-
-    instance.container.removeClass('disabled');
-    instance.statusMessage.hide();
-  };
-
   SnookerLiveServerClient.prototype.createPlayer = function(data) {
     var instance = this,
         userTemplate = Handlebars.compile($('#tpl-player').html());
 
     instance.snooker.append(userTemplate({
-      id: data.id
+      id: data.playerId
     }));
+
+    instance.updateRanking();
   };
 
-  SnookerLiveServerClient.prototype.movePlayer = function (playerId, xy) {
+  SnookerLiveServerClient.prototype.updateRanking = function (data) {
     var instance = this;
 
-    $('#player-' + playerId).animate({
-      left: xy[0],
-      top: xy[1]
-    }, 300, 'ease-out');
+    instance.socket.emit('updateRanking');
+
+    instance.socket.on('updateRanking', function (data) {
+      var items = '';
+
+      $.each(data, function (index, item) {
+        items += '<li>' + index + '</li>';
+      });
+
+      instance.ranking.find('ul').html(items);
+    });
+  };
+
+  SnookerLiveServerClient.prototype.movePlayer = function (data) {
+    var instance = this;
+
+    $('#player-' + data.playerId).css({
+      left: data.xy[0],
+      top: data.xy[1]
+    })
   };
 
   SnookerLiveServerClient.prototype.disconnectPlayer = function (playerId) {
     var instance = this;
-    console.log('bye' + playerId, $('#player-' + playerId));
 
     $('#player-' + playerId).remove();
+
+    instance.updateRanking();
   };
 
   new SnookerLiveServerClient();

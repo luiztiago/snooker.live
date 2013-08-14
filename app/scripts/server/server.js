@@ -1,7 +1,8 @@
-var config = require('../config.js').SNOOKER_CONFIG,
+ var config = require('../config.js').SNOOKER_CONFIG,
     io = require('socket.io').listen(config.port),
     log = require("cli-log").init({ prefix: '[SnookerLive]', prefixColor: 'cyan', prefixBgColor: 'bgCyan' }),
-    STORAGE = {};
+    TOTAL_PLAYERS = 0,
+    GAME_STORAGE = {};
 
 var SnookerLiveServer = function (config) {
   this.applyConfig()
@@ -44,14 +45,30 @@ SnookerLiveServer.prototype.handlers = function (socket) {
   });
 
   socket.on('movePlayer', function (data) {
-    io.sockets.in('server').emit('movePlayer', {playerId: data.playerId, xy: data.xy});
+    io.sockets.in('server').emit('movePlayer', data);
+  });
+
+  socket.on('chooseOption', function (data) {
+    io.sockets.in('server').emit('chooseOption', data);
+  });
+
+  socket.on('updateRanking', function () {
+    instance.updateRanking();
   });
 
   socket.on('disconnect', function () {
-    io.sockets.in('server').emit('disconnectPlayer', {playerId: socket.id});
+    io.sockets.in('server').emit('disconnectPlayer', {playerId: socket.player_id});
 
-    log.warn('User disconnected with ID: ' + socket.id);
+    delete GAME_STORAGE[socket.player_id];
+
+    log.warn('User disconnected with ID: ' + socket.player_id);
   });
+};
+
+SnookerLiveServer.prototype.updateRanking = function () {
+  var instance = this;
+
+  io.sockets.in('server').emit('updateRanking', GAME_STORAGE);
 };
 
 SnookerLiveServer.prototype.setupUser = function (socket, data) {
@@ -63,14 +80,21 @@ SnookerLiveServer.prototype.setupUser = function (socket, data) {
     log.info("New server window started with ID: " + socket.id);
   }
   else {
+
+    var PLAYER_ID = ++TOTAL_PLAYERS;
+
     socket.join('user');
 
-    io.sockets.in('server').emit('createPlayer', {id: socket.id});
+    socket.player_id = PLAYER_ID;
 
-    log.info("New user connected in user's channel width ID: " + socket.id);
+    GAME_STORAGE[PLAYER_ID] = 0;
+
+    io.sockets.in('server').emit('createPlayer', {playerId: PLAYER_ID});
+
+    log.info("New user connected in user's channel width ID: " + PLAYER_ID);
   }
 
-  socket.emit('welcome', {status: true, id: socket.id});
+  socket.emit('welcome', {status: true, id: PLAYER_ID});
 };
 
 new SnookerLiveServer(config);
